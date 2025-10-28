@@ -1,28 +1,21 @@
-import os
 import subprocess
-import tkinter as tk
-from tkinter import simpledialog, messagebox
 
-# Tkinter терезесін жасау
-root = tk.Tk()
-root.withdraw()  # Негізгі терезені жасыр
-
-# Commit хабарламасын сұрау
-commit_message = simpledialog.askstring("Git Commit", "Commit хабарламасын енгізіңіз:")
+# Commit хабарламасын консольдан сұрау
+commit_message = input("Commit хабарламасын енгізіңіз: ")
 
 if commit_message:
     try:
-        # Файлдарды қосу
-        subprocess.run(["git", "add", "."])
+        # Барлық файлдарды қосу
+        subprocess.run(["git", "add", "."], check=True)
 
         # Commit жасау
-        subprocess.run(["git", "commit", "-m", commit_message])
+        subprocess.run(["git", "commit", "-m", commit_message], check=True)
 
         # Push жасау
-        subprocess.run(["git", "push"])
+        subprocess.run(["git", "push"], check=True)
 
-        messagebox.showinfo("Жетістік", "Commit және push сәтті өтті!")
-    except Exception as e:
-        messagebox.showerror("Қате", f"Қате пайда болды: {e}")
+        print("Commit және push сәтті өтті!")
+    except subprocess.CalledProcessError as e:
+        print(f"Қате пайда болды: {e}")
 else:
-    messagebox.showwarning("Бос хабарлама", "Commit хабарламасы енгізілмеді.")
+    print("Commit хабарламасы енгізілмеді.")
